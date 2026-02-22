@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TabBrain</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="popup">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">🧠</div>
+        <h1>TabBrain</h1>
+      </div>
+      <button class="settings-btn" id="settingsBtn" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </header>
+
+    <!-- Save Button -->
+    <button class="save-btn" id="saveBtn">
+      <span class="save-btn-icon">⚡</span>
+      <span class="save-btn-text">Save All Tabs</span>
+      <span class="save-btn-loading" id="saveLoading" style="display:none">
+        <div class="spinner"></div>
+        Saving...
+      </span>
+    </button>
+
+    <!-- AI Status -->
+    <div class="ai-status" id="aiStatus">
+      <span class="ai-dot" id="aiDot"></span>
+      <span id="aiStatusText"></span>
+    </div>
+
+    <!-- Results (shown after save) -->
+    <div class="results" id="results" style="display:none">
+      <div class="results-header">
+        <h2>Saved!</h2>
+        <span class="tab-count" id="tabCount"></span>
+      </div>
+      <div class="category-list" id="categoryList"></div>
+    </div>
+
+    <!-- Recent Sessions -->
+    <div class="sessions-section">
+      <div class="sessions-header">
+        <h3>Recent Sessions</h3>
+        <button class="dashboard-link" id="dashboardBtn">Open Dashboard →</button>
+      </div>
+      <div class="sessions-list" id="sessionsList">
+        <div class="empty-state" id="emptyState">
+          <span class="empty-icon">📭</span>
+          <p>No saved sessions yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
