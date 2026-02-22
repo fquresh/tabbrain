@@ -44,7 +44,7 @@ Click **Save All Tabs** to capture every open tab instantly. Duplicates are auto
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/tabbrain.git
+   git clone https://github.com/fquresh/tabbrain.git
    ```
 2. Open Chrome → `chrome://extensions`
 3. Enable **Developer mode** (top right toggle)
