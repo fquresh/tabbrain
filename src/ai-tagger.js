@@ -1,21 +1,26 @@
 ((function () {
     /**
-     * TabBrain — AI Tagger Module
-     * Uses Gemini Flash API for intelligent multi-tagging
+     * TabBrain - AI Tagger Module
+     * Uses the Gemini API for intelligent multi-tagging
      */
+
+    // Pinned model ID. Check https://ai.google.dev/gemini-api/docs/deprecations before changing.
+    const GEMINI_MODEL = 'gemini-3.5-flash-lite';
 
     const AI_CONFIG = {
         gemini: {
             name: 'Gemini',
-            model: 'gemini-2.0-flash',
-            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-            buildHeaders: (apiKey) => ({ 'Content-Type': 'application/json' }),
-            buildUrl: (endpoint, apiKey) => `${endpoint}?key=${apiKey}`,
+            model: GEMINI_MODEL,
+            endpoint: `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+            // Send the key in a header so it stays out of URLs and request logs
+            buildHeaders: (apiKey) => ({ 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }),
+            buildUrl: (endpoint) => endpoint,
             buildBody: (prompt) => ({
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: {
                     temperature: 0.1,
-                    maxOutputTokens: 256,
+                    // 15 tabs x (tags + summary) needs well over 256 tokens
+                    maxOutputTokens: 4096,
                     responseMimeType: 'application/json'
                 }
             }),
@@ -46,7 +51,7 @@
 INSTRUCTIONS:
 1. For each tab, return 2-6 tags that describe the SPECIFIC content
 2. Tags must be lowercase, 1-3 words each
-3. Be SPECIFIC — prefer "react hooks" over "coding", "nba trade rumors" over "sports"
+3. Be SPECIFIC - prefer "react hooks" over "coding", "nba trade rumors" over "sports"
 4. For social media (X/Twitter, Reddit), identify the TOPIC of the post:
    - Trading/stocks: tag with specific tickers ($TSLA, $AAPL), "trading", market type
    - Crypto: tag with specific coins, "crypto", "defi", etc.
@@ -89,7 +94,7 @@ Return ONLY the JSON array.`;
             const prompt = buildTaggingPrompt(batch);
 
             try {
-                const url = config.buildUrl(config.endpoint, apiKey);
+                const url = config.buildUrl(config.endpoint);
                 const headers = config.buildHeaders(apiKey);
                 const body = config.buildBody(prompt);
 
@@ -109,11 +114,11 @@ Return ONLY the JSON array.`;
 
                 if (Array.isArray(results)) {
                     for (const item of results) {
-                        if (typeof item.index === 'number' && Array.isArray(item.tags)) {
-                            const originalIndex = i + item.index;
-                            allResults.set(originalIndex, {
-                                tags: item.tags.map(t => String(t).toLowerCase().trim()).filter(Boolean),
-                                summary: item.summary || ''
+                        if (Number.isInteger(item?.index) && item.index >= 0 && item.index < batch.length && Array.isArray(item.tags)) {
+                            // Model output is untrusted (page text can steer it), so coerce and clamp it
+                            allResults.set(i + item.index, {
+                                tags: item.tags.slice(0, 8).map(t => String(t).toLowerCase().trim().slice(0, 40)).filter(Boolean),
+                                summary: String(item.summary ?? '').slice(0, 200)
                             });
                         }
                     }
@@ -134,7 +139,7 @@ Return ONLY the JSON array.`;
         if (!config) return { valid: false, error: 'Unknown provider' };
 
         try {
-            const url = config.buildUrl(config.endpoint, apiKey);
+            const url = config.buildUrl(config.endpoint);
             const headers = config.buildHeaders(apiKey);
             const body = config.buildBody('Reply with just the word "ok"');
 
