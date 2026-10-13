@@ -1,22 +1,22 @@
 /* TabBrain — Dashboard Styles */
 
 :root {
-    --bg-primary: #0a0a10;
-    --bg-secondary: #111118;
-    --bg-card: #16161e;
-    --bg-tertiary: #1e1e2a;
-    --bg-hover: #252535;
-    --text-primary: #e8e8ed;
-    --text-secondary: #8888a0;
-    --text-muted: #55556a;
-    --accent: #a78bfa;
-    --accent-dim: rgba(167, 139, 250, 0.15);
-    --accent-glow: rgba(167, 139, 250, 0.3);
-    --green: #34d399;
+    --bg-primary: #0e0e10;
+    --bg-secondary: #161618;
+    --bg-card: #161618;
+    --bg-tertiary: #1c1c1f;
+    --bg-hover: #232327;
+    --text-primary: #ececef;
+    --text-secondary: #a1a1aa;
+    --text-muted: #6b6b74;
+    --accent: #6ea8fe;
+    --accent-dim: rgba(110, 168, 254, 0.12);
+    --accent-glow: rgba(110, 168, 254, 0.25);
+    --green: #4ade80;
     --red: #f87171;
     --yellow: #fbbf24;
-    --border: rgba(255, 255, 255, 0.06);
-    --border-hover: rgba(255, 255, 255, 0.12);
+    --border: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(255, 255, 255, 0.13);
     --radius: 12px;
     --radius-sm: 8px;
     --sidebar-width: 220px;
@@ -29,7 +29,8 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -79,17 +80,16 @@ body::-webkit-scrollbar-thumb {
 }
 
 .logo {
-    font-size: 26px;
-    line-height: 1;
+    width: 22px;
+    height: 22px;
+    color: var(--text-primary);
+    flex-shrink: 0;
 }
 
 .sidebar-header h1 {
     font-size: 18px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), #c4b5fd);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    color: var(--text-primary);
     letter-spacing: -0.3px;
 }
 
@@ -207,10 +207,10 @@ body::-webkit-scrollbar-thumb {
     align-items: center;
     gap: 6px;
     padding: 12px 24px;
-    background: linear-gradient(135deg, #7c3aed, var(--accent));
+    background: var(--text-primary);
     border: none;
     border-radius: var(--radius);
-    color: white;
+    color: var(--bg-primary);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -219,8 +219,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .save-now-btn:hover {
-    box-shadow: 0 8px 25px var(--accent-glow);
-    transform: translateY(-1px);
+    background: #fff;
 }
 
 .save-now-btn:disabled {
@@ -476,11 +475,8 @@ body::-webkit-scrollbar-thumb {
 
 .stat-number {
     font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), #c4b5fd);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .stat-label {
@@ -558,7 +554,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 .empty-dash-icon {
-    font-size: 48px;
+    width: 40px;
+    height: 40px;
+    color: var(--text-muted);
     margin-bottom: 16px;
 }
 
@@ -892,11 +890,8 @@ body::-webkit-scrollbar-thumb {
 
 .insight-number {
     font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), #c4b5fd);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .insight-label {

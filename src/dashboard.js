@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         saveNowBtn.disabled = false;
-        saveNowBtn.innerHTML = '<span>⚡</span> Save Current Tabs';
+        saveNowBtn.innerHTML = 'Save Current Tabs';
     });
 
     // Search
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
         <div class="card-stats">
           <span class="stat-number">${session.tabCount}</span>
-          <span class="stat-label">tabs in ${session.categoryCount} categories</span>
+          <span class="stat-label">tabs in ${session.categoryCount} ${session.categoryCount === 1 ? 'category' : 'categories'}</span>
           ${session.aiTagged ? '<span class="ai-pill">AI ✓</span>' : ''}
         </div>
         <div class="card-categories">${categoryBadges}</div>

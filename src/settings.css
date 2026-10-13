@@ -1,18 +1,18 @@
 /* TabBrain — Settings Page Styles */
 
 :root {
-    --bg-primary: #0f0f14;
-    --bg-secondary: #16161e;
-    --bg-tertiary: #1e1e2a;
-    --bg-hover: #252535;
-    --text-primary: #e8e8ed;
-    --text-secondary: #8888a0;
-    --text-muted: #55556a;
-    --accent: #a78bfa;
-    --accent-glow: rgba(167, 139, 250, 0.3);
-    --green: #34d399;
+    --bg-primary: #0e0e10;
+    --bg-secondary: #161618;
+    --bg-tertiary: #1c1c1f;
+    --bg-hover: #232327;
+    --text-primary: #ececef;
+    --text-secondary: #a1a1aa;
+    --text-muted: #6b6b74;
+    --accent: #6ea8fe;
+    --accent-glow: rgba(110, 168, 254, 0.25);
+    --green: #4ade80;
     --red: #f87171;
-    --border: rgba(255, 255, 255, 0.06);
+    --border: rgba(255, 255, 255, 0.07);
     --radius: 10px;
     --radius-sm: 6px;
 }
@@ -24,7 +24,8 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -47,16 +48,16 @@ body {
 }
 
 .logo {
-    font-size: 32px;
+    width: 28px;
+    height: 28px;
+    color: var(--text-primary);
+    flex-shrink: 0;
 }
 
 .header h1 {
     font-size: 24px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--accent), #c4b5fd);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-primary);
 }
 
 .section {
@@ -275,10 +276,10 @@ body {
 
 .save-settings-btn {
     padding: 12px 28px;
-    background: linear-gradient(135deg, #7c3aed, var(--accent));
+    background: var(--text-primary);
     border: none;
     border-radius: var(--radius);
-    color: white;
+    color: var(--bg-primary);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -286,8 +287,7 @@ body {
 }
 
 .save-settings-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 25px var(--accent-glow);
+    background: #fff;
 }
 
 .save-status {

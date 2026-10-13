@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "TabBrain",
-  "version": "1.0.0",
-  "description": "Save, categorize, and AI-tag all your browser tabs with one click. Built for focus.",
+  "version": "1.1.0",
+  "description": "Copy links of selected tabs, and save, categorize, and AI-tag your browser tabs.",
   "permissions": [
     "tabs",
     "storage",
@@ -37,6 +37,6 @@
     }
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com"
+    "extension_pages": "script-src 'self'; style-src 'self' 'unsafe-inline'"
   }
 }
