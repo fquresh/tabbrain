@@ -11,6 +11,14 @@ A Chrome extension that captures your open tabs, organizes them into smart categ
 
 ## ✨ Features
 
+### Copy Selected Tab Links
+Select tabs with **⇧-click** or **⌘-click** in the tab strip, then click the TabBrain icon.
+The popup lists the selected tabs, and one click copies their links.
+- Three formats: plain URLs, Markdown list, or title + URL
+- Your format choice is remembered
+- Keyboard: **↵** or **⌘C** copies, **1** / **2** / **3** switches format
+- With one tab selected, it copies the current tab, and you can copy every tab in the window
+
 ### One-Click Save
 Click **Save All Tabs** to capture every open tab instantly. Duplicates are automatically skipped.
 
@@ -32,7 +40,7 @@ Click **Save All Tabs** to capture every open tab instantly. Duplicates are auto
 - Export/Import sessions as JSON for cross-device transfer
 
 ### ADHD-Friendly Design
-- Dark mode UI with rich purple accents
+- Calm, neutral dark UI with system fonts and no external requests
 - Clear visual hierarchy with color-coded categories
 - Minimal clicks, maximum organization
 
@@ -69,6 +77,7 @@ Click **Save All Tabs** to capture every open tab instantly. Duplicates are auto
     ├── categorizer.js     # 24 URL categories + content subcategorization
     ├── ai-tagger.js       # Gemini Flash API integration
     ├── content.js         # Content script — extracts page text
+    ├── link-format.js     # Formats selected tabs as URLs / Markdown / title + URL
     ├── popup.html/js/css  # Extension popup UI
     ├── dashboard.html/js/css  # Full-page dashboard
     └── settings.html/js/css   # API key configuration

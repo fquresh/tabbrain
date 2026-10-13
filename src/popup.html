@@ -5,61 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TabBrain</title>
   <link rel="stylesheet" href="popup.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="popup">
-    <!-- Header -->
+  <!-- Shared icon set -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-logo" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3" fill="currentColor" opacity=".35"/><path d="M3 10a3 3 0 0 1 3-3h4.2l1.6-2.2A2 2 0 0 1 13.4 4H18a3 3 0 0 1 3 3v3z" fill="currentColor"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1.5"/><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/></symbol>
+    <symbol id="i-restore" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 1H8a2 2 0 0 1-2-1L5 6"/></symbol>
+  </svg>
+
+  <main class="popup">
     <header class="header">
-      <div class="header-left">
-        <div class="logo">🧠</div>
-        <h1>TabBrain</h1>
+      <div class="brand">
+        <svg class="brand-mark"><use href="#i-logo"/></svg>
+        <span>TabBrain</span>
       </div>
-      <button class="settings-btn" id="settingsBtn" title="Settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-      </button>
+      <div class="header-actions">
+        <button class="icon-btn" id="dashboardBtn" title="Open dashboard" aria-label="Open dashboard"><svg><use href="#i-grid"/></svg></button>
+        <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+      </div>
     </header>
 
-    <!-- Save Button -->
-    <button class="save-btn" id="saveBtn">
-      <span class="save-btn-icon">⚡</span>
-      <span class="save-btn-text">Save All Tabs</span>
-      <span class="save-btn-loading" id="saveLoading" style="display:none">
-        <div class="spinner"></div>
-        Saving...
-      </span>
-    </button>
+    <!-- Copy links of the selected tabs -->
+    <section class="card copy-card" aria-labelledby="selTitle">
+      <div class="card-head">
+        <div>
+          <div class="eyebrow" id="selEyebrow">Selected tabs</div>
+          <div class="card-title" id="selTitle">-</div>
+        </div>
+        <div class="favicon-stack" id="favStack" aria-hidden="true"></div>
+      </div>
 
-    <!-- AI Status -->
-    <div class="ai-status" id="aiStatus">
-      <span class="ai-dot" id="aiDot"></span>
-      <span id="aiStatusText"></span>
-    </div>
+      <ul class="sel-list" id="selList"></ul>
 
-    <!-- Results (shown after save) -->
-    <div class="results" id="results" style="display:none">
-      <div class="results-header">
-        <h2>Saved!</h2>
-        <span class="tab-count" id="tabCount"></span>
+      <div class="segmented" id="formatPicker" role="radiogroup" aria-label="Link format"></div>
+
+      <button class="btn btn-primary" id="copyBtn">
+        <svg class="btn-icon"><use href="#i-copy"/></svg>
+        <span id="copyLabel">Copy links</span>
+        <kbd>↵</kbd>
+      </button>
+
+      <p class="hint" id="selHint">
+        Tip: <kbd>⇧</kbd>-click or <kbd>⌘</kbd>-click tabs in the tab strip to select more than one.
+      </p>
+      <button class="btn-text" id="copyWindowBtn"></button>
+    </section>
+
+    <!-- Save session -->
+    <section class="save-row">
+      <button class="btn btn-secondary" id="saveBtn">
+        <svg class="btn-icon"><use href="#i-archive"/></svg>
+        <span id="saveLabel">Save all tabs</span>
+      </button>
+      <span class="ai-status" id="aiStatus" title=""><span class="dot"></span><span id="aiStatusText"></span></span>
+    </section>
+
+    <section class="results" id="results" hidden>
+      <div class="section-head">
+        <h2>Saved</h2>
+        <span class="muted" id="tabCount"></span>
       </div>
       <div class="category-list" id="categoryList"></div>
-    </div>
+    </section>
 
-    <!-- Recent Sessions -->
-    <div class="sessions-section">
-      <div class="sessions-header">
-        <h3>Recent Sessions</h3>
-        <button class="dashboard-link" id="dashboardBtn">Open Dashboard →</button>
+    <section class="sessions">
+      <div class="section-head">
+        <h2>Recent sessions</h2>
       </div>
-      <div class="sessions-list" id="sessionsList">
-        <div class="empty-state" id="emptyState">
-          <span class="empty-icon">📭</span>
-          <p>No saved sessions yet</p>
-        </div>
-      </div>
-    </div>
-  </div>
+      <div class="sessions-list" id="sessionsList"></div>
+      <p class="empty" id="emptyState" hidden>No saved sessions yet.</p>
+    </section>
+  </main>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="link-format.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
