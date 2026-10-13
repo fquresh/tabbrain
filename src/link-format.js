@@ -1,5 +1,5 @@
 /**
- * TabBrain — Link Formatting
+ * TabBrain - Link Formatting
  * Turns a list of tabs into clipboard text. Pure functions, no Chrome APIs.
  */
 

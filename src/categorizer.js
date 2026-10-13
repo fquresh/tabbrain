@@ -1,6 +1,6 @@
 ((function () {
   /**
-   * TabBrain — Categorization Engine v2
+   * TabBrain - Categorization Engine v2
    * Expanded URL patterns, content-aware subcategories, reduced "Other" bucket
    */
 
@@ -401,32 +401,6 @@
   }
 
   /**
-   * Generate a brief content summary (for hover tooltips)
-   */
-  function generateSummary(title, content) {
-    if (!content || content.length < 30) return title || '';
-
-    // Try to get the first meaningful sentence
-    const cleaned = content
-      .replace(/\s+/g, ' ')
-      .replace(/^[\s\n]+/, '')
-      .trim();
-
-    // Find first sentence-like chunk (up to ~120 chars)
-    const sentenceMatch = cleaned.match(/^(.{40,120}?[.!?])\s/);
-    if (sentenceMatch) return sentenceMatch[1];
-
-    // Fallback: truncate at word boundary
-    if (cleaned.length > 120) {
-      const truncated = cleaned.substring(0, 120);
-      const lastSpace = truncated.lastIndexOf(' ');
-      return (lastSpace > 80 ? truncated.substring(0, lastSpace) : truncated) + '…';
-    }
-
-    return cleaned;
-  }
-
-  /**
    * Full categorization of a tab
    */
   function categorizeTab(tab, pageContent = '', aiTags = []) {
@@ -447,7 +421,7 @@
       }
     }
 
-    // Summary left empty — only populated by AI tagger when API key is set
+    // Summary left empty - only populated by AI tagger when API key is set
 
     return {
       id: tab.id,
@@ -467,7 +441,7 @@
   // Export for use in service worker
   globalThis.TabBrainCategorizer = {
     categorizeByUrl, tagByKeywords, categorizeTab, getSubcategory,
-    generateSummary, URL_CATEGORIES, KEYWORD_TAGS, SUBCATEGORY_RULES
+    URL_CATEGORIES, KEYWORD_TAGS, SUBCATEGORY_RULES
   };
 
 })());

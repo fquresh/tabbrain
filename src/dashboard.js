@@ -1,5 +1,5 @@
 /**
- * TabBrain — Dashboard Logic
+ * TabBrain - Dashboard Logic
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -174,12 +174,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .sort((a, b) => b.tabs.length - a.tabs.length);
 
             const categoryBadges = sortedCats.slice(0, 4).map(c =>
-                `<span class="cat-badge" style="background:${c.color}18;color:${c.color};border:1px solid ${c.color}30">${c.icon} ${c.tabs.length}</span>`
+                `<span class="cat-badge" style="background:${safeColor(c.color)}18;color:${safeColor(c.color)};border:1px solid ${safeColor(c.color)}30">${escapeHtml(c.icon)} ${c.tabs.length}</span>`
             ).join('');
 
             // Get all tags from this session
             const sessionTags = [...new Set(session.allTabs.flatMap(t => t.tags))].slice(0, 6);
-            const tagBadges = sessionTags.map(t => `<span class="dash-tag">${t}</span>`).join('');
+            const tagBadges = sessionTags.map(t => `<span class="dash-tag">${escapeHtml(t)}</span>`).join('');
 
             card.innerHTML = `
         <div class="card-header">
@@ -240,23 +240,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         for (const cat of sortedCats) {
             const tabsHTML = cat.tabs.map(tab => `
         <a class="modal-tab" href="${escapeHtml(tab.url)}" target="_blank">
-          <img src="${tab.favIconUrl || ''}" class="modal-tab-icon" data-fallback>
+          <img src="${safeSrc(tab.favIconUrl)}" class="modal-tab-icon" data-fallback>
           <div class="modal-tab-info">
             <span class="modal-tab-title">${escapeHtml(tab.title)}</span>
             <span class="modal-tab-url">${escapeHtml(new URL(tab.url).hostname)}</span>
             ${tab.summary ? `<span class="modal-tab-summary">${escapeHtml(tab.summary)}</span>` : ''}
           </div>
-          ${tab.tags.length ? `<div class="modal-tab-tags">${tab.tags.map(t => `<span class="dash-tag">${t}</span>`).join('')}</div>` : ''}
+          ${tab.tags.length ? `<div class="modal-tab-tags">${tab.tags.map(t => `<span class="dash-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
         </a>
       `).join('');
 
             categoriesHTML += `
         <div class="modal-category">
-          <div class="modal-cat-header" style="border-left: 3px solid ${cat.color}">
-            <span>${cat.icon} ${cat.name}</span>
+          <div class="modal-cat-header" style="border-left: 3px solid ${safeColor(cat.color)}">
+            <span>${escapeHtml(cat.icon)} ${escapeHtml(cat.name)}</span>
             <div class="modal-cat-actions">
               <span class="modal-cat-count">${cat.tabs.length} tabs</span>
-              <button class="open-cat-btn" data-category="${escapeHtml(cat.name)}" data-session="${session.id}">Open all ↗</button>
+              <button class="open-cat-btn" data-category="${escapeHtml(cat.name)}" data-session="${escapeHtml(session.id)}">Open all ↗</button>
             </div>
           </div>
           <div class="modal-tabs">${tabsHTML}</div>
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div class="session-modal">
         <div class="modal-header">
           <div>
-            <h2>Session — ${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h2>
+            <h2>Session - ${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h2>
             <p class="modal-subtitle">${session.tabCount} tabs • ${session.categoryCount} categories${session.aiTagged ? ' • AI tagged' : ''}</p>
           </div>
           <button class="modal-close" id="modalClose">✕</button>
@@ -345,13 +345,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const row = document.createElement('tr');
             const date = new Date(tab.sessionDate || tab.savedAt);
             row.innerHTML = `
-        <td><img src="${tab.favIconUrl || ''}" class="table-favicon" data-fallback></td>
+        <td><img src="${safeSrc(tab.favIconUrl)}" class="table-favicon" data-fallback></td>
         <td>
           <a href="${escapeHtml(tab.url)}" target="_blank" class="table-title" title="${escapeHtml(tab.summary || tab.title)}">${escapeHtml(tab.title)}</a>
           ${tab.summary ? `<span class="table-summary">${escapeHtml(tab.summary)}</span>` : ''}
         </td>
-        <td><span class="table-cat" style="color:${tab.categoryColor}">${tab.categoryIcon} ${tab.category}</span></td>
-        <td>${tab.tags.map(t => `<span class="dash-tag">${t}</span>`).join(' ')}</td>
+        <td><span class="table-cat" style="color:${safeColor(tab.categoryColor)}">${escapeHtml(tab.categoryIcon)} ${escapeHtml(tab.category)}</span></td>
+        <td>${tab.tags.map(t => `<span class="dash-tag">${escapeHtml(t)}</span>`).join(' ')}</td>
         <td class="table-date">${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
         <td class="table-actions">
           <a href="${escapeHtml(tab.url)}" target="_blank" class="table-open" title="Open">↗</a>
@@ -387,10 +387,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         let html = `<span class="filter-count">${shown} of ${total} tabs</span>`;
         if (category) {
-            html += `<button class="active-filter-chip" data-clear="category">${category} ✕</button>`;
+            html += `<button class="active-filter-chip" data-clear="category">${escapeHtml(category)} ✕</button>`;
         }
         if (tag) {
-            html += `<button class="active-filter-chip" data-clear="tag">${tag} ✕</button>`;
+            html += `<button class="active-filter-chip" data-clear="tag">${escapeHtml(tag)} ✕</button>`;
         }
         activeFilters.innerHTML = html;
         activeFilters.querySelectorAll('.active-filter-chip').forEach(btn => {
@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Populate session view chips
         categoryFilters.innerHTML = sorted.slice(0, 8).map(([cat, count]) =>
-            `<button class="filter-chip" data-category="${escapeHtml(cat)}">${cat} (${count})</button>`
+            `<button class="filter-chip" data-category="${escapeHtml(cat)}">${escapeHtml(cat)} (${count})</button>`
         ).join('');
         categoryFilters.querySelectorAll('.filter-chip').forEach(chip => {
             chip.addEventListener('click', () => {
@@ -488,9 +488,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const color = catColors[cat] || '#64748b';
             return `
         <div class="breakdown-row">
-          <span class="breakdown-label">${cat}</span>
+          <span class="breakdown-label">${escapeHtml(cat)}</span>
           <div class="breakdown-bar-bg">
-            <div class="breakdown-bar-fill" style="width:${pct}%;background:${color}"></div>
+            <div class="breakdown-bar-fill" style="width:${pct}%;background:${safeColor(color)}"></div>
           </div>
           <span class="breakdown-count">${count}</span>
         </div>
@@ -516,14 +516,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         tagCloud.innerHTML = sortedTags.slice(0, 30).map(([tag, count]) => {
             const size = 12 + Math.round((count / maxTag) * 16);
             const opacity = 0.5 + (count / maxTag) * 0.5;
-            return `<span class="cloud-tag" style="font-size:${size}px;opacity:${opacity}">${tag}</span>`;
+            return `<span class="cloud-tag" style="font-size:${size}px;opacity:${opacity}">${escapeHtml(tag)}</span>`;
         }).join('');
     }
 
+    // Escapes text for both element content and quoted attribute values
     function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        return String(text ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function safeColor(color) {
+        return /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(color || '') ? color : '#64748b';
+    }
+
+    // Favicons may only load over http(s) or as inline data images
+    function safeSrc(url) {
+        return /^(https?:|data:image\/)/i.test(url || '') ? escapeHtml(url) : '';
     }
 
     // CSP-safe image error handling (replaces inline onerror)

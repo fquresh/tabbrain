@@ -1,5 +1,5 @@
 /**
- * TabBrain — Popup Logic
+ * TabBrain - Popup Logic
  */
 
 const LinkFormat = globalThis.TabBrainLinkFormat;
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function safeColor(color) {
-        return /^#[0-9a-f]{3,8}$/i.test(color || '') ? color : '#6b6b74';
+        return /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(color || '') ? color : '#6b6b74';
     }
 
     function escapeHtml(text) {

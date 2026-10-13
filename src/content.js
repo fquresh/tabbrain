@@ -1,5 +1,5 @@
 /**
- * TabBrain — Content Script
+ * TabBrain - Content Script
  * Extracts visible page text and meta information for categorization
  */
 
@@ -58,6 +58,6 @@
                 sendResponse({ success: false, content: '', error: err.message });
             }
         }
-        return true; // Keep channel open for async response
+        // Responses are sent synchronously, so the channel does not need to stay open
     });
 })();

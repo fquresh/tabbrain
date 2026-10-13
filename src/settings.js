@@ -1,5 +1,5 @@
 /**
- * TabBrain — Settings Page Logic
+ * TabBrain - Settings Page Logic
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
