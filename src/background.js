@@ -45,15 +45,36 @@ function isWebUrl(url) {
     }
 }
 
+// chrome.storage.local holds 10 MB. Keep a margin for settings.
+const SESSION_STORAGE_BUDGET = Math.floor((chrome.storage.local.QUOTA_BYTES || 10485760) * 0.9);
+
 /**
- * Save all open tabs - the main action
+ * Delete the oldest sessions only when the sessions no longer fit in storage.
+ * Sessions must be sorted newest first. The newest session is always kept.
  */
-async function saveAllTabs() {
-    // 1. Get all tabs
-    const tabs = await chrome.tabs.query({});
+function fitSessionsInStorage(sessions) {
+    const encoder = new TextEncoder();
+    const bytes = value => encoder.encode(JSON.stringify(value)).length;
+    let total = bytes(sessions);
+    while (total > SESSION_STORAGE_BUDGET && sessions.length > 1) {
+        total -= bytes(sessions.pop()) + 1; // +1 for the comma between sessions
+    }
+}
+
+/**
+ * Save open tabs as a new session - the main action.
+ * Saves every open tab, or only the tabs in tabIds when it is given.
+ */
+async function saveTabs(tabIds = null) {
+    // 1. Get the tabs
+    const openTabs = await chrome.tabs.query({});
+    const tabs = Array.isArray(tabIds) ? openTabs.filter(t => tabIds.includes(t.id)) : openTabs;
 
     // Keep web pages only (skips chrome://, extension pages, file://, etc.)
     const webTabs = tabs.filter(t => isWebUrl(t.url));
+    if (webTabs.length === 0) {
+        throw new Error('Only web pages can be saved');
+    }
 
     // Deduplicate against previous sessions and within this save, before any
     // page text is read or sent to the AI provider
@@ -143,9 +164,7 @@ async function saveAllTabs() {
 
     // 8. Save to storage
     existingSessions.unshift(session); // Newest first
-
-    // Keep last 50 sessions to manage storage
-    if (existingSessions.length > 50) existingSessions.length = 50;
+    fitSessionsInStorage(existingSessions);
 
     await chrome.storage.local.set({ sessions: existingSessions });
 
@@ -308,7 +327,7 @@ async function importSessions(importData) {
 
     // Sort by date, newest first
     existing.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
-    if (existing.length > 50) existing.length = 50;
+    fitSessionsInStorage(existing);
 
     await chrome.storage.local.set({ sessions: existing });
 
@@ -347,7 +366,7 @@ async function deleteTab(tabUrl) {
 // Message handler
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const handlers = {
-        'SAVE_TABS': () => saveAllTabs(),
+        'SAVE_TABS': () => saveTabs(message.tabIds),
         'GET_SESSIONS': () => getSessions(),
         'DELETE_SESSION': () => deleteSession(message.sessionId),
         'DELETE_TAB': () => deleteTab(message.tabUrl),

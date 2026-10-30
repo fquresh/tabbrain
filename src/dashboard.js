@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
         <div class="card-stats">
           <span class="stat-number">${session.tabCount}</span>
-          <span class="stat-label">tabs in ${session.categoryCount} ${session.categoryCount === 1 ? 'category' : 'categories'}</span>
+          <span class="stat-label">${session.tabCount === 1 ? 'tab' : 'tabs'} in ${session.categoryCount} ${session.categoryCount === 1 ? 'category' : 'categories'}</span>
           ${session.aiTagged ? '<span class="ai-pill">AI ✓</span>' : ''}
         </div>
         <div class="card-categories">${categoryBadges}</div>
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="modal-cat-header" style="border-left: 3px solid ${safeColor(cat.color)}">
             <span>${escapeHtml(cat.icon)} ${escapeHtml(cat.name)}</span>
             <div class="modal-cat-actions">
-              <span class="modal-cat-count">${cat.tabs.length} tabs</span>
+              <span class="modal-cat-count">${plural(cat.tabs.length, 'tab')}</span>
               <button class="open-cat-btn" data-category="${escapeHtml(cat.name)}" data-session="${escapeHtml(session.id)}">Open all ↗</button>
             </div>
           </div>
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="modal-header">
           <div>
             <h2>Session - ${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h2>
-            <p class="modal-subtitle">${session.tabCount} tabs • ${session.categoryCount} categories${session.aiTagged ? ' • AI tagged' : ''}</p>
+            <p class="modal-subtitle">${plural(session.tabCount, 'tab')} • ${plural(session.categoryCount, 'category', 'categories')}${session.aiTagged ? ' • AI tagged' : ''}</p>
           </div>
           <button class="modal-close" id="modalClose">✕</button>
         </div>
@@ -532,6 +532,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function safeColor(color) {
         return /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(color || '') ? color : '#64748b';
+    }
+
+    function plural(n, one, many = `${one}s`) {
+        return `${n} ${n === 1 ? one : many}`;
     }
 
     // Favicons may only load over http(s) or as inline data images

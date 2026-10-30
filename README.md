@@ -1,7 +1,7 @@
 # TabBrain
 
 A Chrome extension that copies the links of the tabs you select.
-It can also save all your open tabs as a list you can search later.
+It can also save tabs as a list you can search later.
 Everything stays on your computer.
 
 ![Selecting three tabs, copying them as Markdown, and pasting the list](docs/demo.gif)
@@ -31,7 +31,10 @@ The link shows the number of tabs, and it appears only when the window has more 
 
 ## Save tabs for later
 
-**Save all tabs** stores every open tab, in all windows, as one session.
+**Save tab** stores only the tab you are on.
+If you select more than one tab, the button shows the number, for example **Save 3 tabs**.
+**Save all tabs** stores every open tab, in all windows.
+Each save becomes one session.
 Your tabs stay open.
 TabBrain labels each tab by its site, for example Dev / Code, News, or Shopping.
 Sites that TabBrain does not know go to Other.
@@ -89,7 +92,8 @@ Your sessions and settings stay on your computer, inside Chrome.
 ## Good to know
 
 - Your saved sessions exist only in this Chrome profile.
-- TabBrain keeps your 50 newest sessions and deletes older ones.
+- Chrome gives TabBrain 10 MB of storage, which holds thousands of tabs.
+- When the storage is almost full, TabBrain deletes your oldest sessions to make space.
 - TabBrain saves only web pages (`http` and `https`). It skips pages like `chrome://settings` and local files.
 - I build and test TabBrain in Chrome only.
 

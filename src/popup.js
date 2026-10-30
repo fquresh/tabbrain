@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const copyLabel = $('copyLabel');
     const copyWindowBtn = $('copyWindowBtn');
     const formatPicker = $('formatPicker');
-    const saveBtn = $('saveBtn');
-    const saveLabel = $('saveLabel');
+    const saveSelBtn = $('saveSelBtn');
+    const saveAllBtn = $('saveAllBtn');
 
     let selectedTabs = [];
+    let savableTabs = [];
     let windowTabs = [];
     let currentFormat = LinkFormat.DEFAULT_FORMAT;
     let copyLabelText = 'Copy link';
@@ -94,6 +95,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         copyLabel.textContent = copyLabelText;
         copyBtn.disabled = count === 0;
         $('selHint').hidden = multi;
+
+        // Only web pages can be saved
+        savableTabs = selectedTabs.filter(t => isWebUrl(t.url));
+        const savable = savableTabs.length;
+        saveSelBtn.querySelector('.btn-label').textContent = savable > 1 ? `Save ${savable} tabs` : 'Save tab';
+        saveSelBtn.title = savable ? '' : 'Only web pages can be saved';
+        saveSelBtn.disabled = savable === 0;
 
         // Favicon stack (first 4)
         const stack = $('favStack');
@@ -186,20 +194,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ── Save session ───────────────────────────────────────
 
-    saveBtn.addEventListener('click', async () => {
-        saveBtn.disabled = true;
-        saveBtn.classList.add('busy');
-        saveLabel.textContent = 'Saving…';
+    saveSelBtn.addEventListener('click', () => saveTabs(saveSelBtn, savableTabs.map(t => t.id)));
+    saveAllBtn.addEventListener('click', () => saveTabs(saveAllBtn));
+
+    // Save the tabs in tabIds as a new session, or every open tab when tabIds is not given
+    async function saveTabs(btn, tabIds) {
+        const label = btn.querySelector('.btn-label');
+        const idleText = label.textContent;
+        saveSelBtn.disabled = saveAllBtn.disabled = true;
+        btn.classList.add('busy');
+        label.textContent = 'Saving…';
 
         try {
-            const response = await chrome.runtime.sendMessage({ type: 'SAVE_TABS' });
+            const response = await chrome.runtime.sendMessage({ type: 'SAVE_TABS', tabIds });
             if (!response?.success) throw new Error(response?.error || 'Failed to save tabs');
             const data = response.data;
             if (data.allDuplicates) {
-                toast(`All tabs are already saved (${data.duplicatesSkipped} skipped)`);
+                const n = data.duplicatesSkipped;
+                toast(n === 1 ? 'This tab is already saved' : `All ${n} tabs are already saved`);
             } else {
                 if (data.duplicatesSkipped > 0) {
-                    toast(`Saved ${data.tabCount} tabs, ${data.duplicatesSkipped} duplicates skipped`);
+                    toast(`Saved ${plural(data.tabCount, 'tab')}, ${plural(data.duplicatesSkipped, 'duplicate')} skipped`);
                 }
                 showResults(data);
                 loadSessions();
@@ -207,11 +222,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) {
             toast(err.message, 'error');
         } finally {
-            saveBtn.disabled = false;
-            saveBtn.classList.remove('busy');
-            saveLabel.textContent = 'Save all tabs';
+            btn.classList.remove('busy');
+            label.textContent = idleText;
+            saveAllBtn.disabled = false;
+            saveSelBtn.disabled = savableTabs.length === 0;
         }
-    });
+    }
 
     function showResults(session) {
         $('results').hidden = false;
@@ -290,7 +306,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="session-main">
                     <div class="session-line">
                         <span class="session-time">${formatTimeAgo(new Date(session.savedAt))}</span>
-                        <span class="session-count">${session.tabCount} tabs</span>
+                        <span class="session-count">${plural(session.tabCount, 'tab')}</span>
                     </div>
                     <div class="session-cats">
                         ${top.map(c => `<span class="session-cat"><span class="cat-dot" style="background:${safeColor(c.color)}"></span>${escapeHtml(c.name)}</span>`).join('')}
@@ -344,6 +360,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             wrap.textContent = letter;
         }
         return wrap;
+    }
+
+    function isWebUrl(url) {
+        return /^https?:/i.test(url || '');
     }
 
     function hostOf(tab) {

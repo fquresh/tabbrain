@@ -323,13 +323,19 @@ kbd {
 .hint kbd { padding: 1px 4px; font-size: 10px; }
 
 /* Save row */
+.save-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .save-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .ai-status {
+  align-self: center;
   display: flex;
   align-items: center;
   gap: 6px;
