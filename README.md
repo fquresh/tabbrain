@@ -112,6 +112,7 @@ src/link-format.js     Link formats for copying
 src/popup.*            Toolbar popup
 src/dashboard.*        Session dashboard
 src/settings.*         API key settings
+icons/icon.svg         Logo source. Run icons/render-icons.sh to make the PNGs
 ```
 
 ## License

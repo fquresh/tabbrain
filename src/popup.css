@@ -92,7 +92,7 @@ kbd {
   letter-spacing: -0.01em;
 }
 
-.brand-mark { width: 20px; height: 20px; color: var(--text); }
+.brand-mark { width: 20px; height: 20px; }
 
 .header-actions { display: flex; gap: 2px; }
 
